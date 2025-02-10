@@ -28,8 +28,8 @@
                         <input type="password" class="form-control" id="password2" name="password2" placeholder="비밀번호 확인" required>
                     </div>             
                     <div class="mb-3">
-                        <label for="name" class="form-label">이름</label>
-                        <input type="text" class="form-control" id="name" name="name" placeholder="이름" required>
+                        <label for="username" class="form-label">이름</label>
+                        <input type="text" class="form-control" id="username" name="username" placeholder="이름" required>
                     </div>
                     <div class="mb-3">
                         <label for="tel" class="form-label">전화번호</label>
@@ -73,7 +73,7 @@
                     required: true,
                     equalTo: '#password'
                 },
-                name: {
+                username: {
                     required: true,
                     maxlength: 50
                 },
@@ -102,7 +102,7 @@
                     required: '비밀번호 확인을 입력하세요.',
                     equalTo: '비밀번호가 일치하지 않습니다.'
                 },
-                name: {
+                username: {
                     required: '이름을 입력하세요.',
                     maxlength: '이름은 최대 50자까지 가능합니다.'
                 },

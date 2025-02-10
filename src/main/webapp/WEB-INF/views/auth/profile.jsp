@@ -44,7 +44,7 @@
             </div>
         </div>
         <div class="text-center">
-            <a href="/auth/update-profile" class="btn btn-success mx-2">프로필 수정</a>
+            <a href="/auth/update_profile" class="btn btn-success mx-2">프로필 수정</a>
             <a href="/auth/update-password" class="btn btn-warning mx-2">비밀번호 변경</a>
             <a href="/auth/delete-account" class="btn btn-danger mx-2">회원탈퇴</a>
         </div>

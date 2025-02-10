@@ -33,7 +33,7 @@ public class PostsController {
     @Autowired
     PostsService postsService;
 
-    private final String uploadPath = "C:/uploads/board";
+    private final String uploadPath = "C:/uploads/posts";
     private static final Logger logger = LoggerFactory.getLogger(PostsController.class); // logger 선언 추가
 
     // 게시글 등록

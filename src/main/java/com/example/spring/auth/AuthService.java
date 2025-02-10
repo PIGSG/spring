@@ -6,14 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.example.spring.users.UsersDao;  // UsersDao → UserDao로 변경
+import com.example.spring.users.UserDao;  // UsersDao → UserDao로 변경
 import com.example.spring.users.UsersVo;
 
 @Service
 public class AuthService {
 
     @Autowired
-    UsersDao userDao;  // UsersDao → UserDao로 변경
+    UserDao userDao;  // UsersDao → UserDao로 변경
 
     @Autowired
     private PasswordEncoder passwordEncoder;

@@ -1,4 +1,5 @@
 com\example\spring\posts\PostsService.class
+com\example\spring\users\UserDao.class
 com\example\spring\HomeController.class
 com\example\spring\posts\PostsDao.class
 com\example\spring\config\AuthInterceptor.class
@@ -8,6 +9,6 @@ com\example\spring\auth\AuthService.class
 com\example\spring\libs\Pagination.class
 com\example\spring\users\UsersVo.class
 com\example\spring\posts\PostsVo.class
+com\example\spring\users\UserController.class
 com\example\spring\posts\PostsController.class
-com\example\spring\users\UsersDao.class
 com\example\spring\users\UsersService.class

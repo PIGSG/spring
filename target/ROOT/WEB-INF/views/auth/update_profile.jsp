@@ -9,7 +9,7 @@
 <div class="row">
     <div class="col-12">
         <!-- 프로필 수정 -->
-        <form id="updateProfileForm" action="/auth/update-profile" method="POST">
+        <form id="updateProfileForm" action="/auth/update_profile" method="POST">
             <div class="card mb-3">
                 <div class="card-header">
                     <h5 class="card-title">프로필 수정</h5>
@@ -20,8 +20,8 @@
                         <input type="text" class="form-control" id="userId" name="userId" placeholder="아이디" required>
                     </div>    
                     <div class="mb-3">
-                        <label for="passwd" class="form-label">비밀번호</label>
-                        <input type="password" class="form-control" id="passwd" name="passwd" placeholder="비밀번호" required>
+                        <label for="password" class="form-label">비밀번호</label>
+                        <input type="password" class="form-control" id="password" name="password" placeholder="비밀번호" required>
                     </div>
                 </div>
             </div>
@@ -43,7 +43,7 @@
         // 프로필 수정 폼 검증
         $('#updateForm').validate({
             rules: {
-                name: {
+                username: {
                     required: true,
                     maxlength: 50
                 },
@@ -58,7 +58,7 @@
                 }
             },
             messages: {
-                name: {
+                username: {
                     required: '이름을 입력하세요.',
                     maxlength: '이름은 최대 50자까지 가능합니다.'
                 },

@@ -8,8 +8,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
@@ -38,11 +38,11 @@ public class AuthController {
 
     // 회원가입 처리 (POST 요청)
     @PostMapping("/register")
-    public ModelAndView register(@RequestBody UsersVo usersVo, RedirectAttributes redirectAttributes) {
+    public ModelAndView register(@ModelAttribute UsersVo usersVo, RedirectAttributes redirectAttributes) {
         ModelAndView mav = new ModelAndView();
+        // UsersVo 객체에 폼 데이터가 자동으로 바인딩됩니다.
         try {
             boolean created = userService.create(usersVo);
-
             if (created) {
                 redirectAttributes.addFlashAttribute("successMessage", "회원가입이 완료되었습니다.");
                 mav.setViewName("redirect:/auth/login");
@@ -51,7 +51,7 @@ public class AuthController {
                 mav.setViewName("redirect:/auth/register");
             }
         } catch (Exception e) {
-            logger.error("회원가입 처리 중 오류가 발생했습니다: ", e);  // 예외 로깅
+            logger.error("회원가입 처리 중 오류가 발생했습니다: ", e);
             redirectAttributes.addFlashAttribute("errorMessage", "회원가입에 실패했습니다.");
             mav.setViewName("redirect:/auth/register");
         }
@@ -118,15 +118,27 @@ public class AuthController {
 
     // 프로필 페이지 (GET 요청)
     @GetMapping("/profile")
-    public ModelAndView profile() {
+    public ModelAndView profile(HttpServletRequest request) {
         ModelAndView mav = new ModelAndView();
+        UsersVo usersVo = (UsersVo) request.getSession().getAttribute("user");
+        mav.addObject("user", usersVo);
         mav.setViewName("auth/profile");
         return mav;
     }
 
+
+    // 프로필 업데이트 페이지를 GET 방식으로 처리
+    @GetMapping("/update_profile")
+    public ModelAndView updateProfilePage() {
+        ModelAndView mav = new ModelAndView();
+        mav.setViewName("auth/update_profile");
+        return mav;
+    }
+
+
     // 프로필 수정 (POST 요청)
-    @PostMapping("/update-profile")
-    public ModelAndView updateProfile(UsersVo usersVo, RedirectAttributes redirectAttributes) {
+    @PostMapping("/update_profile")
+    public ModelAndView updateProfile(@ModelAttribute UsersVo usersVo, RedirectAttributes redirectAttributes) {
         ModelAndView mav = new ModelAndView();
 
         try {
@@ -136,34 +148,36 @@ public class AuthController {
                 mav.setViewName("redirect:/auth/profile");
             } else {
                 redirectAttributes.addFlashAttribute("errorMessage", "프로필 수정에 실패했습니다.");
-                mav.setViewName("redirect:/auth/update-profile");
+                mav.setViewName("redirect:/auth/update_profile");
             }
         } catch (Exception e) {
             logger.error("Profile update error occurred for user {}: ", usersVo.getUserId(), e);  // 오류 로깅
             redirectAttributes.addFlashAttribute("errorMessage", "프로필 수정 중 오류가 발생했습니다.");
-            mav.setViewName("redirect:/auth/update-profile");
+            mav.setViewName("redirect:/auth/update_profile");
         }
 
         return mav;
     }
 
+
+
     // 비밀번호 수정 (POST 요청)
-    @PostMapping("/update-password")
+    @PostMapping("/update_password")
     public ModelAndView updatePassword(@RequestParam("password") String password,
                                        @RequestParam("password1") String password1,
                                        HttpServletRequest request, RedirectAttributes redirectAttributes) {
         ModelAndView mav = new ModelAndView();
 
         try {
-            String userId = (String) request.getSession().getAttribute("userId");
+            UsersVo usersVo = (UsersVo) request.getSession().getAttribute("user");
             UsersVo existUsersVo = new UsersVo();
-            existUsersVo.setUserId(userId);
+            existUsersVo.setUserId(usersVo.getUserId());
 
             UsersVo existUser = userService.read(existUsersVo);
 
             if (!existUser.getPassword().equals(password)) {
                 redirectAttributes.addFlashAttribute("errorMessage", "기존 비밀번호가 일치하지 않습니다.");
-                mav.setViewName("redirect:/auth/update-password");
+                mav.setViewName("redirect:/auth/update_password");
             } else {
                 existUsersVo.setPassword(password1);
                 boolean updated = userService.updatePassword(existUsersVo);
@@ -173,13 +187,13 @@ public class AuthController {
                     mav.setViewName("redirect:/auth/profile");
                 } else {
                     redirectAttributes.addFlashAttribute("errorMessage", "비밀번호 수정에 실패했습니다.");
-                    mav.setViewName("redirect:/auth/update-password");
+                    mav.setViewName("redirect:/auth/update_password");
                 }
             }
         } catch (Exception e) {
             logger.error("Password update error occurred: ", e);  // 오류 로깅
             redirectAttributes.addFlashAttribute("errorMessage", "비밀번호 수정 중 오류가 발생했습니다.");
-            mav.setViewName("redirect:/auth/update-password");
+            mav.setViewName("redirect:/auth/update_password");
         }
 
         return mav;

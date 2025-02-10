@@ -20,7 +20,7 @@ public class SecurityConfig {
         http
             .authorizeHttpRequests(authorizeRequests -> 
                 authorizeRequests
-                    .requestMatchers("/login", "/register").permitAll()  // 로그인, 회원가입 경로는 누구나 접근 가능
+                    .requestMatchers("/login", "/register","/").permitAll()  // 로그인, 회원가입 경로는 누구나 접근 가능
                     .anyRequest().authenticated()  // 나머지 경로는 인증 필요
             )
             .formLogin(form -> 

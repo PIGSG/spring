@@ -1,4 +1,4 @@
-C:\spring\src\main\java\com\example\spring\users\UsersDao.java
+C:\spring\src\main\java\com\example\spring\users\UserController.java
 C:\spring\src\main\java\com\example\spring\config\SecurityConfig.java
 C:\spring\src\main\java\com\example\spring\posts\PostsDao.java
 C:\spring\src\main\java\com\example\spring\users\UsersService.java
@@ -10,4 +10,5 @@ C:\spring\src\main\java\com\example\spring\posts\PostsVo.java
 C:\spring\src\main\java\com\example\spring\auth\AuthController.java
 C:\spring\src\main\java\com\example\spring\posts\PostsController.java
 C:\spring\src\main\java\com\example\spring\libs\Pagination.java
+C:\spring\src\main\java\com\example\spring\users\UserDao.java
 C:\spring\src\main\java\com\example\spring\users\UsersVo.java

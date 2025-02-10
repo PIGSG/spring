@@ -20,8 +20,8 @@
                         <input type="text" class="form-control" id="userId" name="userId" placeholder="아이디" required>
                     </div>    
                     <div class="mb-3">
-                        <label for="passwd" class="form-label">비밀번호</label>
-                        <input type="password" class="form-control" id="passwd" name="passwd" placeholder="비밀번호" required>
+                        <label for="password" class="form-label">비밀번호</label>
+                        <input type="password" class="form-control" id="password" name="password" placeholder="비밀번호" required>
                     </div>    
                     <div class="d-grid">
                         <button type="submit" class="btn btn-primary">로그인</button>
@@ -50,7 +50,7 @@
                 userId: {
                     required: true,
                 },
-                passwd: {
+                password: {
                     required: true,
                 },
             },
@@ -58,7 +58,7 @@
                 userId: {
                     required: '아이디를 입력하세요.',
                 },
-                passwd: {
+                password: {
                     required: '비밀번호를 입력하세요.',
                 },
             },
