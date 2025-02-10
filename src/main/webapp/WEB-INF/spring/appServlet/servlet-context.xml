@@ -39,7 +39,6 @@
         <interceptor>
             <mapping path="/**" />
             <!-- 인증이 필요없는 경로 -->
-            <exclude-mapping path="/**" />
             <exclude-mapping path="/auth/login" />
             <exclude-mapping path="/auth/register" />
             <exclude-mapping path="/auth/find-user-id" />

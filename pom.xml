@@ -13,8 +13,6 @@
         <spring.security.version>5.8.11</spring.security.version>
         <org.slf4j-version>1.7.36</org.slf4j-version>
         <log4j.version>2.20.0</log4j.version>
-        <!-- JDK 21에 맞는 버전으로 설정 -->
-        <jdk.version>21</jdk.version>
     </properties>
 
     <!-- 의존성 목록 -->
@@ -70,11 +68,7 @@
             <artifactId>slf4j-api</artifactId>
             <version>${org.slf4j-version}</version>
         </dependency>
-        <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-slf4j-impl</artifactId>
-            <version>${log4j.version}</version>
-        </dependency>
+ 
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-core</artifactId>
@@ -137,8 +131,6 @@
         </dependency>
 
         <!-- Spring Security -->
-
-        
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-web</artifactId>
@@ -154,6 +146,25 @@
             <artifactId>spring-security-taglibs</artifactId>
             <version>${spring.security.version}</version>
         </dependency>
+
+
+<dependency>
+  <groupId>commons-fileupload</groupId>
+  <artifactId>commons-fileupload</artifactId>
+  <version>1.4</version>
+</dependency>
+
+
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-web</artifactId>
+    <version>2.7.6</version>  <!-- 올바른 버전을 확인 -->
+</dependency>
+
+
+
+
+
     </dependencies>
 
     <!-- 빌드 설정 -->
@@ -166,13 +177,13 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.1</version>
                 <configuration>
-                    <!-- JDK 21로 수정 -->
-                    <release>${jdk.version}</release>
+                    <source>1.8</source>
+                    <target>1.8</target>
                     <encoding>UTF-8</encoding>
                 </configuration>
             </plugin>
 
-            <!-- Maven WAR 플러그인 -->
+            <!-- Maven 실행 플러그인 -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>

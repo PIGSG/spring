@@ -47,8 +47,8 @@
             <tbody>
                 <c:forEach items="${postsVoList}" var="postsVo">
                     <tr>
-                        <td>${postsVo.seq}</td>
-                        <td><a href="/posts/${postsVo.seq}/">${postsVo.title}</a></td>
+                        <td>${postsVo.id}</td>
+                        <td><a href="/posts/${postsVo.id}/">${postsVo.title}</a></td>
                         <td>${postsVo.username}</td>
                         <td>${postsVo.createdAt.substring(0, 16)}</td>
                        <td>${postsVo.updatedAt.substring(0, 16)}</td>

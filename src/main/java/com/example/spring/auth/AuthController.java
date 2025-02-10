@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.example.spring.users.UserService;
+import com.example.spring.users.UsersService;
 import com.example.spring.users.UsersVo;
 
 @Controller
@@ -25,12 +25,18 @@ public class AuthController {
     private static final Logger logger = LoggerFactory.getLogger(AuthController.class);  // SLF4J Logger
 
     @Autowired
-    private UserService userService;
+    private UsersService userService;
 
     @Autowired
     private AuthService authService;
 
-    // 회원가입
+    // 회원가입 페이지 (GET /register)
+    @GetMapping("/register")
+    public String registerPage() {
+        return "auth/register";  // 회원가입 페이지로 이동
+    }
+
+    // 회원가입 처리 (POST 요청)
     @PostMapping("/register")
     public ModelAndView register(@RequestBody UsersVo usersVo, RedirectAttributes redirectAttributes) {
         ModelAndView mav = new ModelAndView();
@@ -52,6 +58,15 @@ public class AuthController {
         return mav;
     }
 
+    // 로그인 페이지 요청 (GET 요청)
+    @GetMapping("/login")
+    public ModelAndView loginPage() {
+        ModelAndView mav = new ModelAndView();
+        mav.setViewName("auth/login"); // 로그인 페이지 뷰 이름
+        return mav;
+    }
+
+    // 로그인 처리 (POST 요청)
     @PostMapping("/login")
     public ModelAndView login(UsersVo usersVo, HttpServletRequest request, RedirectAttributes redirectAttributes) {
         ModelAndView mav = new ModelAndView();
@@ -90,9 +105,8 @@ public class AuthController {
     
         return mav;
     }
-    
 
-    // 로그아웃
+    // 로그아웃 (GET 요청)
     @GetMapping("/logout")
     public ModelAndView logout(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
@@ -102,7 +116,7 @@ public class AuthController {
         return new ModelAndView("redirect:/auth/login");
     }
 
-    // 프로필
+    // 프로필 페이지 (GET 요청)
     @GetMapping("/profile")
     public ModelAndView profile() {
         ModelAndView mav = new ModelAndView();
@@ -110,7 +124,7 @@ public class AuthController {
         return mav;
     }
 
-    // 프로필 수정
+    // 프로필 수정 (POST 요청)
     @PostMapping("/update-profile")
     public ModelAndView updateProfile(UsersVo usersVo, RedirectAttributes redirectAttributes) {
         ModelAndView mav = new ModelAndView();
@@ -133,7 +147,7 @@ public class AuthController {
         return mav;
     }
 
-    // 비밀번호 수정
+    // 비밀번호 수정 (POST 요청)
     @PostMapping("/update-password")
     public ModelAndView updatePassword(@RequestParam("password") String password,
                                        @RequestParam("password1") String password1,

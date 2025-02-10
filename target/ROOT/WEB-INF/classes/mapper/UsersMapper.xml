@@ -1,47 +1,64 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="userMapper">
+<mapper namespace="usersMapper">
 
-    <resultMap id="userResultMap" type="com.example.spring.users.UsersVo">
+    <resultMap id="usersResultMap" type="com.example.spring.users.UsersVo">
         <result property="userId" column="USER_ID" />
-        <result property="passwd" column="PASSWD" />
-        <result property="name" column="NAME" />
+        <result property="password" column="PASSWORD" />
+        <result property="username" column="USERNAME" />
         <result property="tel" column="TEL" />
         <result property="email" column="EMAIL" />
-        <result property="status" column="STATUS" />
-        <result property="lastLoginAt" column="LAST_LOGIN_AT" />
         <result property="createdAt" column="CREATED_AT" />
         <result property="updatedAt" column="UPDATED_AT" />
     </resultMap>
 
     <!-- 사용자 등록 -->
-    <insert id="create" parameterType="com.example.spring.users.UsersVo">
+    <insert id="create" parameterType="com.example.spring.users.UsersVo" useGeneratedKeys="true" keyProperty="userId">
         <![CDATA[
-        INSERT INTO USER (
-            USER_ID, 
-            PASSWD, 
-            NAME, 
+        INSERT INTO USERS (
+            USERNAME, 
+            PASSWORD, 
             TEL, 
-            EMAIL
+            EMAIL,
         ) VALUES (
-            #{userId}, 
-            #{passwd}, 
-            #{name}, 
+            #{username}, 
+            #{password}, 
             #{tel}, 
             #{email}
         )
         ]]>
     </insert>
 
-    <!-- 사용자 정보 -->
-    <select id="read" parameterType="String" resultMap="userResultMap">
+    <!-- 사용자 보기 -->
+    <select id="read" resultMap="usersResultMap">
         <![CDATA[
-        SELECT * FROM USER WHERE 1=1
+        SELECT
+            USER_ID,
+            USERNAME,
+            TEL,
+            EMAIL,
+            PASSWORD,
+            CREATED_AT,
+            UPDATED_AT
+        FROM
+            USERS
+        WHERE
+            1 = 1
         ]]>
         <if test="userId != null">
             <![CDATA[
             AND USER_ID = #{userId}
+            ]]>
+        </if>
+        <if test="username != null">
+            <![CDATA[
+            AND USERNAME = #{username}
+            ]]>
+        </if>
+        <if test="tel != null">
+            <![CDATA[
+            AND TEL = #{tel}
             ]]>
         </if>
         <if test="email != null">
@@ -52,148 +69,18 @@
     </select>
 
     <!-- 사용자 수정 -->
-    <update id="update" parameterType="com.example.spring.users.UsersVo">
+    <update id="update">
         <![CDATA[
-        UPDATE USER SET
-        ]]>
-        <if test="name != null">
-            <![CDATA[
-            NAME = #{name},
-            ]]>
-        </if>
-        <if test="passwd != null">
-            <![CDATA[
-            PASSWD = #{passwd},
-            ]]>
-        </if>
-        <if test="tel != null">
-            <![CDATA[
+        UPDATE
+            USERS
+        SET
+            USERNAME = #{username},
+            PASSWORD = #{password},
             TEL = #{tel},
-            ]]>
-        </if>
-        <if test="email != null">
-            <![CDATA[
-            EMAIL = #{email},
-            ]]>
-        </if>
-        <if test="status != null">
-            <![CDATA[
-            STATUS = #{status},
-            ]]>
-        </if>
-        <if test="lastLoginAt != null">
-            <![CDATA[
-            LAST_LOGIN_AT = #{lastLoginAt}
-            ]]>
-        </if>
-        <![CDATA[
-        WHERE USER_ID = #{userId}
+            EMAIL = #{email}
+        WHERE
+            USER_ID = #{userId}
         ]]>
     </update>
-
-    <!-- 사용자 목록 -->
-    <select id="list" resultMap="userResultMap">
-        <![CDATA[
-        SELECT
-            USER_ID,
-            NAME,
-            TEL,
-            EMAIL,
-            STATUS,
-            LAST_LOGIN_AT,
-            CREATED_AT,
-            UPDATED_AT
-        FROM
-            USER
-        WHERE 1=1
-        ]]>
-        <if test="searchType != null and searchKeyword != null">
-            <choose>
-                <when test="userId != null">
-                    <![CDATA[
-                    AND USER_ID LIKE CONCAT('%', #{searchKeyword}, '%')
-                    ]]>
-                </when>
-                <when test="searchType == 'name'">
-                    <![CDATA[
-                    AND NAME LIKE CONCAT('%', #{searchKeyword}, '%')
-                    ]]>
-                </when>
-                <when test="searchType == 'tel'">
-                    <![CDATA[
-                    AND TEL LIKE CONCAT('%', #{searchKeyword}, '%')
-                    ]]>
-                </when>
-                <when test="searchType == 'email'">
-                    <![CDATA[
-                    AND EMAIL LIKE CONCAT('%', #{searchKeyword}, '%')
-                    ]]>
-                </when>
-                <when test="searchType == 'all'">
-                    <![CDATA[
-                    AND (
-                        USER_ID LIKE CONCAT('%', #{searchKeyword}, '%')
-                        OR NAME LIKE CONCAT('%', #{searchKeyword}, '%')
-                        OR TEL LIKE CONCAT('%', #{searchKeyword}, '%')
-                        OR EMAIL LIKE CONCAT('%', #{searchKeyword}, '%')
-                    )
-                    ]]>
-                </when>
-            </choose>
-        </if>
-        <![CDATA[
-        ORDER BY USER_ID DESC
-        LIMIT #{offset}, #{pageSize}
-        ]]>
-    </select>
-
-    <!-- 전체 사용자 수 조회 -->
-    <select id="getTotalCount" resultType="int">
-        <![CDATA[
-        SELECT COUNT(*) FROM USER
-        WHERE 1=1
-        ]]>
-        <if test="searchType != null and searchKeyword != null">
-            <choose>
-                <when test="userId != null">
-                    <![CDATA[
-                    AND USER_ID LIKE CONCAT('%', #{searchKeyword}, '%')
-                    ]]>
-                </when>
-                <when test="searchType == 'name'">
-                    <![CDATA[
-                    AND NAME LIKE CONCAT('%', #{searchKeyword}, '%')
-                    ]]>
-                </when>
-                <when test="searchType == 'tel'">
-                    <![CDATA[
-                    AND TEL LIKE CONCAT('%', #{searchKeyword}, '%')
-                    ]]>
-                </when>
-                <when test="searchType == 'email'">
-                    <![CDATA[
-                    AND EMAIL LIKE CONCAT('%', #{searchKeyword}, '%')
-                    ]]>
-                </when>
-                <when test="searchType == 'all'">
-                    <![CDATA[
-                    AND (
-                        USER_ID LIKE CONCAT('%', #{searchKeyword}, '%')
-                        OR NAME LIKE CONCAT('%', #{searchKeyword}, '%')
-                        OR TEL LIKE CONCAT('%', #{searchKeyword}, '%')
-                        OR EMAIL LIKE CONCAT('%', #{searchKeyword}, '%')
-                    )
-                    ]]>
-                </when>
-            </choose>
-        </if>
-    </select>
-
-    <!-- 사용자 삭제 -->
-    <delete id="delete" parameterType="String">
-        <![CDATA[
-        DELETE FROM USER WHERE USER_ID = #{userId}
-        ]]>
-    </delete>
 
 </mapper>

@@ -20,12 +20,12 @@
                         <input type="text" class="form-control" id="userId" name="userId" placeholder="아이디" required>
                     </div>                
                     <div class="mb-3">
-                        <label for="passwd" class="form-label">비밀번호</label>
-                        <input type="password" class="form-control" id="passwd" name="passwd" placeholder="비밀번호" required>
+                        <label for="password" class="form-label">비밀번호</label>
+                        <input type="password" class="form-control" id="password" name="password" placeholder="비밀번호" required>
                     </div>
                     <div class="mb-3">
-                        <label for="passwd2" class="form-label">비밀번호 확인</label>
-                        <input type="password" class="form-control" id="passwd2" name="passwd2" placeholder="비밀번호 확인" required>
+                        <label for="password2" class="form-label">비밀번호 확인</label>
+                        <input type="password" class="form-control" id="password2" name="password2" placeholder="비밀번호 확인" required>
                     </div>             
                     <div class="mb-3">
                         <label for="name" class="form-label">이름</label>
@@ -64,14 +64,14 @@
                     minlength: 4,
                     maxlength: 20
                 },
-                passwd: {
+                password: {
                     required: true,
                     minlength: 8,
                     maxlength: 20
                 },
-                passwd2: {
+                password2: {
                     required: true,
-                    equalTo: '#passwd'
+                    equalTo: '#password'
                 },
                 name: {
                     required: true,
@@ -93,12 +93,12 @@
                     minlength: '아이디는 최소 4자 이상이어야 합니다.',
                     maxlength: '아이디는 최대 20자까지 가능합니다.'
                 },
-                passwd: {
+                password: {
                     required: '비밀번호를 입력하세요.',
                     minlength: '비밀번호는 최소 8자 이상이어야 합니다.',
                     maxlength: '비밀번호는 최대 20자까지 가능합니다.'
                 },
-                passwd2: {
+                password2: {
                     required: '비밀번호 확인을 입력하세요.',
                     equalTo: '비밀번호가 일치하지 않습니다.'
                 },
