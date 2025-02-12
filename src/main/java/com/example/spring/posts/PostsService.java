@@ -58,16 +58,14 @@ public class PostsService {
         int result = postsDao.delete(postsVo.getId());
         return result > 0;
     }
-<<<<<<< HEAD
-=======
 
     public boolean delete(int id) {
         int result = postsDao.delete(id);
         return result > 0;
+    
     }
     
 
 
     
->>>>>>> e6083e0 (Initial commit)
 }

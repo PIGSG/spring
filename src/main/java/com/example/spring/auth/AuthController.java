@@ -30,11 +30,6 @@ public class AuthController {
     @Autowired
     private AuthService authService;
 
-<<<<<<< HEAD
-
-
-=======
->>>>>>> e6083e0 (Initial commit)
         // 게시글 목록 페이지
         @GetMapping("/posts")
         public String viewPosts(HttpServletRequest request) {
@@ -51,37 +46,10 @@ public class AuthController {
             
             return "posts/list"; // 게시글 목록을 보여주는 JSP 또는 HTML 페이지
         }
-<<<<<<< HEAD
-        
-
-    // 게시글 작성 페이지
-    @GetMapping("/posts/create")
-    public ModelAndView createPostPage(HttpServletRequest request) {
-        ModelAndView mav = new ModelAndView();
-        
-        // 로그인된 사용자 정보 가져오기
-        UsersVo loggedInUser = (UsersVo) request.getSession().getAttribute("user");
-        
-        // 로그인되지 않은 경우 로그인 페이지로 리디렉션
-        if (loggedInUser == null) {
-            mav.setViewName("redirect:/auth/login");
-        } else {
-            mav.setViewName("posts/create"); // 게시글 작성 페이지
-        }
-        
-        return mav;
-    }
-
-    
-
-
-
-=======
 
 
     
 
->>>>>>> e6083e0 (Initial commit)
     // 회원가입 페이지 (GET /register)
     @GetMapping("/register")
     public String registerPage() {
@@ -118,29 +86,6 @@ public class AuthController {
         return mav;
     }
 
-<<<<<<< HEAD
-    // 로그인 처리 (POST 요청)
-    @PostMapping("/login")
-    public ModelAndView login(UsersVo usersVo, HttpServletRequest request, RedirectAttributes redirectAttributes) {
-        ModelAndView mav = new ModelAndView();
-    
-        try {
-            // null 체크 추가
-            if (usersVo == null || usersVo.getUserId() == null || usersVo.getPassword() == null) {
-                redirectAttributes.addFlashAttribute("errorMessage", "아이디 또는 비밀번호가 입력되지 않았습니다.");
-                mav.setViewName("redirect:/auth/login");
-                return mav;
-            }
-    
-            usersVo = authService.login(usersVo);
-    
-            if (usersVo != null) {
-                HttpSession session = request.getSession(true);
-                session.setAttribute("user", usersVo);
-                session.setAttribute("isLoggedIn", true);
-    
-                logger.info("User {} logged in successfully.", usersVo.getUserId());  // 로그 기록
-=======
     @PostMapping("/login")
     public ModelAndView login(UsersVo usersVo, HttpServletRequest request, RedirectAttributes redirectAttributes) {
         ModelAndView mav = new ModelAndView();
@@ -151,27 +96,10 @@ public class AuthController {
                 session.setAttribute("user", usersVo);  // 전체 User 객체 저장
                 session.setAttribute("userId", usersVo.getUserId());  // 아이디만 따로 저장
                 session.setAttribute("isLoggedIn", true);  // 로그인 상태 플래그 추가
->>>>>>> e6083e0 (Initial commit)
     
                 mav.setViewName("redirect:/auth/profile");
                 return mav;
             }
-<<<<<<< HEAD
-    
-            redirectAttributes.addFlashAttribute("errorMessage", "아이디 또는 비밀번호가 일치하지 않습니다.");
-            mav.setViewName("redirect:/auth/login");
-    
-        } catch (Exception e) {
-            logger.error("Login error occurred for user {}: ", usersVo != null ? usersVo.getUserId() : "Unknown", e);  // 오류 로깅
-            HttpSession session = request.getSession(false);
-            if (session != null) session.invalidate();
-            redirectAttributes.addFlashAttribute("errorMessage", "로그인 처리 중 오류가 발생했습니다.");
-            mav.setViewName("redirect:/auth/login");
-        }
-    
-        return mav;
-    }
-=======
             redirectAttributes.addFlashAttribute("errorMessage", "아이디 또는 비밀번호가 일치하지 않습니다.");
             mav.setViewName("redirect:/auth/login");
         } catch (Exception e) {
@@ -181,7 +109,6 @@ public class AuthController {
         return mav;
     }
     
->>>>>>> e6083e0 (Initial commit)
 
     // 로그아웃 (GET 요청)
     @GetMapping("/logout")
@@ -342,12 +269,7 @@ public ModelAndView delete(HttpServletRequest request, @RequestParam("password")
 }
 
 
-
-
-
-
-
-
-
-    
 }
+
+
+

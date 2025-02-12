@@ -17,11 +17,7 @@ public class AuthInterceptor implements HandlerInterceptor {
     ) throws Exception {
         HttpSession session = request.getSession(false);
         
-<<<<<<< HEAD
         if (session == null || session.getAttribute("isLoggedIn") == null) {
-=======
-        if (session == null || session.getAttribute("userId") == null) {
->>>>>>> e6083e0 (Initial commit)
             response.sendRedirect("/auth/login?error=auth");
             return false;
         }

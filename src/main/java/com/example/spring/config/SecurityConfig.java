@@ -4,10 +4,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-<<<<<<< HEAD
-=======
 import org.springframework.security.config.http.SessionCreationPolicy;
->>>>>>> e6083e0 (Initial commit)
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;  // SecurityFilterChain import
@@ -18,28 +15,7 @@ import org.springframework.web.servlet.handler.HandlerMappingIntrospector;  // E
 @EnableWebSecurity
 @EnableWebMvc  // Spring MVC 설정 활성화
 public class SecurityConfig {
-
-<<<<<<< HEAD
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-            .authorizeHttpRequests(authorizeRequests -> 
-                authorizeRequests
-                    .requestMatchers("/login", "/register","/").permitAll()  // 로그인, 회원가입 경로는 누구나 접근 가능
-                    .anyRequest().authenticated()  // 나머지 경로는 인증 필요
-            )
-            .formLogin(form -> 
-                form
-                    .loginPage("/login")
-                    .permitAll()
-            )
-            .logout(logout -> 
-                logout
-                    .permitAll()
-            );
-        return http.build();  // HttpSecurity 빌드를 마무리
-    }
-=======
+    
 @Bean
 public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     http
@@ -60,7 +36,6 @@ public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Excepti
         );
     return http.build();
 }
->>>>>>> e6083e0 (Initial commit)
 
     @Bean
     public PasswordEncoder passwordEncoder() {
