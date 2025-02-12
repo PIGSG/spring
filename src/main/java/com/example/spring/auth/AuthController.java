@@ -25,10 +25,52 @@ public class AuthController {
     private static final Logger logger = LoggerFactory.getLogger(AuthController.class);  // SLF4J Logger
 
     @Autowired
-    private UsersService userService;
+    private UsersService usersService;
 
     @Autowired
     private AuthService authService;
+
+
+
+        // 게시글 목록 페이지
+        @GetMapping("/posts")
+        public String viewPosts(HttpServletRequest request) {
+            // 로그인된 사용자 정보 가져오기
+            UsersVo loggedInUser = (UsersVo) request.getSession().getAttribute("user");
+            if (loggedInUser == null) {
+                // 로그인하지 않은 사용자일 경우 로그인 페이지로 리디렉션
+                return "redirect:/auth/login";
+            }
+    
+            // 게시글 목록 처리 로직 (예: 서비스 호출, 데이터베이스 조회 등)
+            // 여기서는 게시글 목록을 뷰에 전달하는 예시입니다.
+            // postsService.getPosts()와 같은 메서드를 호출할 수 있습니다.
+            
+            return "posts/list"; // 게시글 목록을 보여주는 JSP 또는 HTML 페이지
+        }
+        
+
+    // 게시글 작성 페이지
+    @GetMapping("/posts/create")
+    public ModelAndView createPostPage(HttpServletRequest request) {
+        ModelAndView mav = new ModelAndView();
+        
+        // 로그인된 사용자 정보 가져오기
+        UsersVo loggedInUser = (UsersVo) request.getSession().getAttribute("user");
+        
+        // 로그인되지 않은 경우 로그인 페이지로 리디렉션
+        if (loggedInUser == null) {
+            mav.setViewName("redirect:/auth/login");
+        } else {
+            mav.setViewName("posts/create"); // 게시글 작성 페이지
+        }
+        
+        return mav;
+    }
+
+    
+
+
 
     // 회원가입 페이지 (GET /register)
     @GetMapping("/register")
@@ -42,7 +84,7 @@ public class AuthController {
         ModelAndView mav = new ModelAndView();
         // UsersVo 객체에 폼 데이터가 자동으로 바인딩됩니다.
         try {
-            boolean created = userService.create(usersVo);
+            boolean created = usersService.create(usersVo);
             if (created) {
                 redirectAttributes.addFlashAttribute("successMessage", "회원가입이 완료되었습니다.");
                 mav.setViewName("redirect:/auth/login");
@@ -142,7 +184,7 @@ public class AuthController {
         ModelAndView mav = new ModelAndView();
 
         try {
-            boolean updated = userService.update(usersVo);
+            boolean updated = usersService.update(usersVo);
             if (updated) {
                 redirectAttributes.addFlashAttribute("successMessage", "프로필이 수정되었습니다.");
                 mav.setViewName("redirect:/auth/profile");
@@ -160,6 +202,14 @@ public class AuthController {
     }
 
 
+    // 프로필 업데이트 페이지를 GET 방식으로 처리
+    @GetMapping("/update_password")
+    public ModelAndView updatepasswordfilePage() {
+        ModelAndView mav = new ModelAndView();
+        mav.setViewName("auth/update_password");
+        return mav;
+    }
+
 
     // 비밀번호 수정 (POST 요청)
     @PostMapping("/update_password")
@@ -173,14 +223,14 @@ public class AuthController {
             UsersVo existUsersVo = new UsersVo();
             existUsersVo.setUserId(usersVo.getUserId());
 
-            UsersVo existUser = userService.read(existUsersVo);
+            UsersVo existUser = usersService.read(existUsersVo);
 
             if (!existUser.getPassword().equals(password)) {
                 redirectAttributes.addFlashAttribute("errorMessage", "기존 비밀번호가 일치하지 않습니다.");
                 mav.setViewName("redirect:/auth/update_password");
             } else {
                 existUsersVo.setPassword(password1);
-                boolean updated = userService.updatePassword(existUsersVo);
+                boolean updated = usersService.updatePassword(existUsersVo);
 
                 if (updated) {
                     redirectAttributes.addFlashAttribute("successMessage", "비밀번호가 수정되었습니다.");
@@ -198,4 +248,71 @@ public class AuthController {
 
         return mav;
     }
+
+
+
+
+    // 비밀번호 초기화
+    @GetMapping("/reset-password")
+    public ModelAndView resetPassword() {
+        return new ModelAndView("auth/reset_password");
+    }
+
+    // 비밀번호 초기화
+    @PostMapping("/reset-password")
+    public ModelAndView resetPassword(UsersVo usersVo, HttpServletRequest request, RedirectAttributes redirectAttributes) {
+        ModelAndView mav = new ModelAndView();
+
+        UsersVo user = usersService.read(usersVo);        
+
+        if (user != null) {
+            String rndPassword = authService.resetPassword(usersVo);
+            redirectAttributes.addFlashAttribute("successMessage", "초기화된 비밀번호는 " + rndPassword + "입니다.");
+            mav.setViewName("redirect:/auth/reset-password");
+        } else {
+            redirectAttributes.addFlashAttribute("errorMessage", "아이디를 찾을 수 없습니다.");
+            mav.setViewName("redirect:/auth/reset-password");
+        }
+
+        return mav;
+    }
+
+// 회원 탈퇴
+@PostMapping("/delete")
+public ModelAndView delete(HttpServletRequest request, @RequestParam("password") String password, RedirectAttributes redirectAttributes) {
+    ModelAndView mav = new ModelAndView();
+
+    // 사용자 정보
+    String userId = (String) request.getSession().getAttribute("userId");
+    UsersVo usersVo = new UsersVo();
+    usersVo.setUserId(userId);
+
+    try {
+        // 비밀번호를 포함하여 서비스에서 삭제 처리
+        boolean delete = usersService.delete(usersVo, password);
+
+        if (delete) {
+            redirectAttributes.addFlashAttribute("successMessage", "회원 탈퇴가 완료되었습니다.");
+            mav.setViewName("redirect:/auth/logout");
+        } else {
+            redirectAttributes.addFlashAttribute("errorMessage", "비밀번호가 일치하지 않습니다.");
+            mav.setViewName("redirect:/auth/profile");
+        }
+    } catch (Exception e) {
+        redirectAttributes.addFlashAttribute("errorMessage", "회원 탈퇴 중 오류가 발생했습니다.");
+        mav.setViewName("redirect:/auth/profile");
+    }
+
+    return mav;
+}
+
+
+
+
+
+
+
+
+
+    
 }

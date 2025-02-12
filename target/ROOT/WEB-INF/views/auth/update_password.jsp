@@ -9,7 +9,7 @@
 <div class="row">
     <div class="col-12">
         <!-- 비밀번호 수정 -->
-        <form id="updatePasswordForm" action="/auth/update-password" method="POST">
+        <form id="updatePasswordForm" action="/auth/update_password" method="POST">
             <div class="card mb-3">
                 <div class="card-header">
                     <h5 class="card-title">비밀번호 수정</h5>

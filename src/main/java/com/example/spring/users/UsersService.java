@@ -73,14 +73,18 @@ public class UsersService {
         return result;
     }
 
-    // 사용자 삭제
-    public boolean delete(UsersVo usersVo, String password) {
-        // 비밀번호 검증
-        if (!passwordEncoder.matches(password, usersVo.getPassword())) {
-            return false;
-        }
-
-        int result = userDao.delete(usersVo.getUserId());
-        return result > 0;
+// 사용자 삭제
+public boolean delete(UsersVo usersVo, String password) {
+    // 비밀번호 검증
+    if (!passwordEncoder.matches(password, usersVo.getPassword())) {
+        return false;  // 비밀번호가 일치하지 않으면 탈퇴 실패
     }
+
+    // 비밀번호 검증 후 사용자 삭제
+    int result = userDao.delete(usersVo.getUserId());
+    return result > 0;  // 삭제 성공 여부 반환
+}
+
+
+    
 }
