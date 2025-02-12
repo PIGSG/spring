@@ -29,7 +29,11 @@
             </form>
 
             <!-- 게시글 등록 버튼 -->
+<<<<<<< HEAD
             <a href="/auth/posts/create" class="btn btn-primary">게시글 등록</a>
+=======
+            <a href="/posts/create" class="btn btn-primary">게시글 등록</a>
+>>>>>>> e6083e0 (Initial commit)
         </div>
         <!--// 검색, 등록 버튼 -->
 

@@ -30,8 +30,11 @@ public class AuthController {
     @Autowired
     private AuthService authService;
 
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> e6083e0 (Initial commit)
         // 게시글 목록 페이지
         @GetMapping("/posts")
         public String viewPosts(HttpServletRequest request) {
@@ -48,6 +51,7 @@ public class AuthController {
             
             return "posts/list"; // 게시글 목록을 보여주는 JSP 또는 HTML 페이지
         }
+<<<<<<< HEAD
         
 
     // 게시글 작성 페이지
@@ -72,6 +76,12 @@ public class AuthController {
 
 
 
+=======
+
+
+    
+
+>>>>>>> e6083e0 (Initial commit)
     // 회원가입 페이지 (GET /register)
     @GetMapping("/register")
     public String registerPage() {
@@ -108,6 +118,7 @@ public class AuthController {
         return mav;
     }
 
+<<<<<<< HEAD
     // 로그인 처리 (POST 요청)
     @PostMapping("/login")
     public ModelAndView login(UsersVo usersVo, HttpServletRequest request, RedirectAttributes redirectAttributes) {
@@ -129,10 +140,23 @@ public class AuthController {
                 session.setAttribute("isLoggedIn", true);
     
                 logger.info("User {} logged in successfully.", usersVo.getUserId());  // 로그 기록
+=======
+    @PostMapping("/login")
+    public ModelAndView login(UsersVo usersVo, HttpServletRequest request, RedirectAttributes redirectAttributes) {
+        ModelAndView mav = new ModelAndView();
+        try {
+            usersVo = authService.login(usersVo);
+            if (usersVo != null) {
+                HttpSession session = request.getSession(true);
+                session.setAttribute("user", usersVo);  // 전체 User 객체 저장
+                session.setAttribute("userId", usersVo.getUserId());  // 아이디만 따로 저장
+                session.setAttribute("isLoggedIn", true);  // 로그인 상태 플래그 추가
+>>>>>>> e6083e0 (Initial commit)
     
                 mav.setViewName("redirect:/auth/profile");
                 return mav;
             }
+<<<<<<< HEAD
     
             redirectAttributes.addFlashAttribute("errorMessage", "아이디 또는 비밀번호가 일치하지 않습니다.");
             mav.setViewName("redirect:/auth/login");
@@ -147,6 +171,17 @@ public class AuthController {
     
         return mav;
     }
+=======
+            redirectAttributes.addFlashAttribute("errorMessage", "아이디 또는 비밀번호가 일치하지 않습니다.");
+            mav.setViewName("redirect:/auth/login");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("errorMessage", "로그인 처리 중 오류가 발생했습니다.");
+            mav.setViewName("redirect:/auth/login");
+        }
+        return mav;
+    }
+    
+>>>>>>> e6083e0 (Initial commit)
 
     // 로그아웃 (GET 요청)
     @GetMapping("/logout")

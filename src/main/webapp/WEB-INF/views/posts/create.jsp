@@ -9,7 +9,11 @@
 <div class="row">
     <div class="col-12">
         <!-- 게시글 등록 -->
+<<<<<<< HEAD
         <form id="createForm" action="/auth/posts/create" method="POST" enctype="multipart/form-data">
+=======
+        <form id="createForm" action="/posts/create" method="POST" enctype="multipart/form-data">
+>>>>>>> e6083e0 (Initial commit)
             <div class="card mb-3">
                 <div class="card-header">
                     <span class="text-danger">*</span> 표시는 필수항목입니다.

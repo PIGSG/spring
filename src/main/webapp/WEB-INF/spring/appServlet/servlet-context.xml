@@ -47,4 +47,8 @@
         </interceptor>
     </interceptors>
 
+<<<<<<< HEAD
 </beans:beans>
+=======
+</beans:beans>
+>>>>>>> e6083e0 (Initial commit)
