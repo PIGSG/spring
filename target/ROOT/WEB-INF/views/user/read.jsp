@@ -2,11 +2,11 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
-<jsp:include page="../common/top.jsp" />
+<jsp:include page="../base/top.jsp" />
 
 <div class="container">
     <!-- 메시지 -->
-    <jsp:include page="../common/message.jsp" />
+    <jsp:include page="../base/message.jsp" />
     <!--// 메시지 -->
 
     <h1 class="text-center my-4">사용자 정보</h1>
@@ -39,7 +39,7 @@
         </tr>
     </table>
     <div>
-        <a href="/user/" class="btn btn-primary">사용자 목록</a>
+        <a href="/user" class="btn btn-primary">사용자 목록</a>
         <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">사용자 삭제</button>
     </div>
     <!--// 사용자 보기 -->
@@ -53,7 +53,7 @@
                 <h5 class="modal-title" id="deleteModalLabel">사용자 삭제</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form action="/user/${userVo.userId}/delete" method="post">
+            <form action="/user/${usersVo.userId}/delete" method="POST">
                 <div class="modal-body">
                     <div class="mb-3">
                         <label for="password" class="form-label">비밀번호</label>
@@ -74,7 +74,7 @@
 <!--// 삭제 모달 -->
 
 <!-- 스크립트 -->
-<jsp:include page="../common/script.jsp" />
+<jsp:include page="../base/script.jsp" />
 <!--// 스크립트 -->
 
-<jsp:include page="../common/bottom.jsp" />
+<jsp:include page="../base/bottom.jsp" />

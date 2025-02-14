@@ -1,16 +1,17 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %> <!-- ✅ 날짜 포맷용 태그 추가 -->
 
-<jsp:include page="../common/top.jsp" />
+<jsp:include page="../base/top.jsp" />
 
 <div class="container">
     <!-- 메시지 -->
-    <jsp:include page="../common/message.jsp" />
+    <jsp:include page="../base/message.jsp" />
     <!--// 메시지 -->
 
     <!-- 검색 -->
     <div class="mb-3 col-md-4">
-        <form method="get" action="/user/">
+        <form method="get" action="/user">
             <div class="input-group">
                 <select name="searchType" class="form-select">
                     <option value="all" ${searchType == 'all' ? 'selected' : ''}>전체</option>
@@ -22,7 +23,7 @@
                 <input type="text" name="searchKeyword" class="form-control" value="${searchKeyword}" placeholder="검색어를 입력하세요">
                 <button type="submit" class="btn btn-primary">검색</button>
                 <c:if test="${searchType != null}">
-                    <a href="/user/" class="btn btn-danger">취소</a>
+                    <a href="/user" class="btn btn-danger">취소</a>
                 </c:if>
             </div>
         </form>
@@ -47,7 +48,7 @@
                 <c:forEach var="user" items="${userVoList}">
                     <tr>
                         <td><a href="/user/${user.userId}">${user.userId}</a></td>
-                        <td>${user.name}</td>
+                        <td>${user.username}</td>
                         <td>${user.tel}</td>
                         <td>${user.email}</td>
                         <td>
@@ -56,8 +57,18 @@
                                 <c:otherwise>비활성</c:otherwise>
                             </c:choose>
                         </td>
-                        <td>${user.lastLoginAt.substring(0, 16)}</td>
-                        <td>${user.createdAt.substring(0, 16)}</td>
+                        <!-- ✅ 날짜 변환하여 출력 -->
+                        <td>
+                            <c:choose>
+                                <c:when test="${not empty user.lastLoginAtAsDate}">
+                                    <fmt:formatDate value="${user.lastLoginAtAsDate}" pattern="yyyy-MM-dd HH:mm" />
+                                </c:when>
+                                <c:otherwise>-</c:otherwise>
+                            </c:choose>
+                        </td>
+                        <td>
+                            <fmt:formatDate value="${user.createdAtAsDate}" pattern="yyyy-MM-dd HH:mm" />
+                        </td>
                     </tr>
                 </c:forEach>
             </tbody>
@@ -98,7 +109,7 @@
 </div>
 
 <!-- 스크립트 -->
-<jsp:include page="../common/script.jsp" />
+<jsp:include page="../base/script.jsp" />
 <!--// 스크립트 -->
 
-<jsp:include page="../common/bottom.jsp" />
+<jsp:include page="../base/bottom.jsp" />
