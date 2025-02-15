@@ -1,47 +1,54 @@
 package com.example.spring.auth;
 
-import java.util.UUID;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import com.example.spring.users.UserDao;  // UsersDao → UserDao로 변경
+import com.example.spring.users.UserDao;
 import com.example.spring.users.UsersVo;
 
 @Service
 public class AuthService {
 
-    @Autowired
-    UserDao userDao;  // UsersDao → UserDao로 변경
+    private final UserDao usersDao;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    // 로그인
-    public UsersVo login(UsersVo usersVo) {
-        UsersVo existUsersVo = userDao.read(usersVo);  // UsersDao → UserDao로 변경
-
-        if (existUsersVo != null && passwordEncoder.matches(usersVo.getPassword(), existUsersVo.getPassword())) {
-            return existUsersVo;
-        }
-
-        return null;
+    public AuthService(UserDao usersDao, PasswordEncoder passwordEncoder) {
+        this.usersDao = usersDao;
+        this.passwordEncoder = passwordEncoder;
     }
 
-    // 비밀번호 초기화
+    // ✅ 로그인 처리 메서드
+    public UsersVo login(UsersVo usersVo) {
+        UsersVo storedUser = usersDao.findByUserId(usersVo.getUserId());
+
+        if (storedUser != null && passwordEncoder.matches(usersVo.getPassword(), storedUser.getPassword())) {
+            return storedUser; // 로그인 성공
+        }
+        return null; // 로그인 실패
+    }
+
+    // ✅ 비밀번호 검증 메서드 (checkPassword) 추가
+    public boolean checkPassword(String userId, String rawPassword) {
+        UsersVo storedUser = usersDao.findByUserId(userId);
+        if (storedUser == null) {
+            return false;
+        }
+        return passwordEncoder.matches(rawPassword, storedUser.getPassword());
+    }
+
+    // ✅ 비밀번호 초기화 (임시 비밀번호 발급)
     public String resetPassword(UsersVo usersVo) {
-        // 랜덤 비밀번호 생성
-        String rndPassword = UUID.randomUUID().toString().substring(0, 8);
-        String encodedPassword = passwordEncoder.encode(rndPassword);
+        String temporaryPassword = generateRandomPassword();
+        String encodedPassword = passwordEncoder.encode(temporaryPassword);
         usersVo.setPassword(encodedPassword);
 
-        int updated = userDao.update(usersVo);  // UsersDao → UserDao로 변경
+        usersDao.update(usersVo);
+        return temporaryPassword;
+    }
 
-        if (updated > 0) {
-            return rndPassword;
-        } else {
-            return null;
-        }
+    // ✅ 임시 비밀번호 생성 (8자리 랜덤 문자열)
+    private String generateRandomPassword() {
+        return java.util.UUID.randomUUID().toString().substring(0, 8);
     }
 }

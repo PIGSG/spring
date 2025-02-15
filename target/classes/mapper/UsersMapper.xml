@@ -10,10 +10,32 @@
         <result property="tel" column="TEL" />
         <result property="email" column="EMAIL" />
         <result property="status" column="STATUS" />
+        <result property="role" column="ROLE" />  <!-- ✅ ROLE 필드 추가 -->
         <result property="lastLoginAt" column="LAST_LOGIN_AT" />
         <result property="createdAt" column="CREATED_AT" />
         <result property="updatedAt" column="UPDATED_AT" />
     </resultMap>
+
+
+
+<select id="getAdminPassword" parameterType="map" resultType="string">
+    SELECT password FROM users WHERE user_id = #{userId} AND role = 'ROLE_ADMIN'
+</select>
+
+
+    <!-- 사용자 정보 조회 (userId 기준) -->
+    <select id="findByUserId" parameterType="String" resultMap="userResultMap">
+        SELECT * FROM users WHERE user_id = #{userId}
+    </select>
+
+    <!-- 사용자 인증: userId와 password를 기준으로 ROLE_ADMIN 권한을 가진 사용자 인증 -->
+    <select id="authenticateAdmin" parameterType="map" resultType="int">
+        SELECT COUNT(*) 
+        FROM users 
+        WHERE user_id = #{userId} 
+        AND password = #{password} 
+        AND role = 'ROLE_ADMIN'
+    </select>
 
     <!-- 사용자 등록 -->
     <insert id="create" parameterType="com.example.spring.users.UsersVo">
@@ -91,13 +113,25 @@
         ]]>
     </update>
 
+
+<update id="updateLastLogin">
+    UPDATE USERS
+    SET LAST_LOGIN_AT = #{lastLoginAt}
+    WHERE USER_ID = #{userId}
+</update>
+
+
+
+
+
+
     <!-- 사용자 목록 -->
     <select id="list" resultMap="userResultMap">
         <![CDATA[
         SELECT
             USER_ID,
             USERNAME, 
-            PHONE,
+            TEL,
             EMAIL,
             STATUS,
             LAST_LOGIN_AT,
@@ -146,6 +180,14 @@
         LIMIT #{offset}, #{pageSize}
         ]]>
     </select>
+
+
+<delete id="delete" parameterType="string">
+    DELETE FROM USERS WHERE USER_ID = #{userId}
+</delete>
+
+
+    
 
     <!-- 전체 사용자 수 조회 -->
     <select id="getTotalCount" resultType="int">
