@@ -17,7 +17,6 @@
     </resultMap>
 
 
-<<<<<<< HEAD
 
 <select id="getAdminPassword" parameterType="map" resultType="string">
     SELECT password FROM users WHERE user_id = #{userId} AND role = 'ROLE_ADMIN'
@@ -37,15 +36,6 @@
         AND password = #{password} 
         AND role = 'ROLE_ADMIN'
     </select>
-=======
-        <!-- 사용자 정보 조회 (userId 기준) -->
-    <select id="findByUserId" parameterType="string" resultMap="userResultMap">
-        <![CDATA[
-        SELECT * FROM USERS WHERE USER_ID = #{userId}
-        ]]>
-    </select>
-
->>>>>>> 0c54d7b60d34cb155b7a7634cf609b6e99b579ac
 
     <!-- 사용자 등록 -->
     <insert id="create" parameterType="com.example.spring.users.UsersVo">

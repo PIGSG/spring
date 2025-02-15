@@ -21,7 +21,6 @@ public class UsersVo {
     private String role;
     private String status;
 
-<<<<<<< HEAD
     public String getRole() {
         return role;
     }
@@ -32,8 +31,6 @@ public class UsersVo {
 
 
 
-=======
->>>>>>> 0c54d7b60d34cb155b7a7634cf609b6e99b579ac
     // ✅ 생성된 Getter/Setter는 Lombok이 자동으로 생성
 
     // ✅ JSP에서 `fmt:formatDate`를 활용할 수 있도록 `java.util.Date` 반환 메서드 추가

@@ -25,11 +25,7 @@ public class UserController {
     private UsersService usersService;
 
     // ✅ 일반 사용자는 접근 금지
-<<<<<<< HEAD
-    @GetMapping("/")
-=======
     @GetMapping("")
->>>>>>> 0c54d7b60d34cb155b7a7634cf609b6e99b579ac
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")  // 🔥 일반 사용자는 차단됨
     public ModelAndView listUsers(@RequestParam(value = "page", defaultValue = "1") int page,
                                   @RequestParam(required = false) String searchType,

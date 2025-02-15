@@ -5,10 +5,7 @@ com\example\spring\users\UserDao.class
 com\example\spring\HomeController.class
 com\example\spring\posts\PostsDao.class
 com\example\spring\auth\CustomLogoutSuccessHandler.class
-<<<<<<< HEAD
 com\example\spring\admin\AdminService.class
-=======
->>>>>>> 0c54d7b60d34cb155b7a7634cf609b6e99b579ac
 com\example\spring\config\AuthInterceptor.class
 com\example\spring\config\SecurityConfig.class
 com\example\spring\auth\AuthController.class
