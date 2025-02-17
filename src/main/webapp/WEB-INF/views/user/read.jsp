@@ -1,8 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %> <!-- ✅ 날짜 포맷용 태그 추가 -->
 
-<jsp:include page="../base/top.jsp" />
+<!-- ✅ 추가된 include 파일 -->
+<%@ include file="../base/top.jsp" %>
+<%@ include file="../base/navbar.jsp" %>
+<%@ include file="../base/title.jsp" %>
+<%@ include file="../base/message.jsp" %>
 
 <div class="container">
     <!-- 메시지 -->
@@ -15,34 +19,57 @@
     <table class="table table-bordered mb-3">
         <tr>
             <th class="text-center col-md-2">아이디</th>
-            <td class="col-md-10">${userVo.userId}</td>
+            <td class="col-md-10">${user.userId}</td>
         </tr>
         <tr>
             <th class="text-center col-md-2">이름</th>
-            <td class="col-md-10">${userVo.username}</td>
+            <td class="col-md-10">${user.username}</td>
         </tr>
         <tr>
             <th class="text-center col-md-2">이메일</th>
-            <td class="col-md-10">${userVo.email}</td>
+            <td class="col-md-10">${user.email}</td>
         </tr>
         <tr>
             <th class="text-center col-md-2">연락처</th>
-            <td class="col-md-10">${userVo.tel}</td>
+            <td class="col-md-10">${user.tel}</td>
+        </tr>
+        <tr>
+            <th class="text-center col-md-2">상태</th>
+            <td class="col-md-10">
+                <c:choose>
+                    <c:when test="${user.status == 'active'}">활성</c:when>
+                    <c:otherwise>비활성</c:otherwise>
+                </c:choose>
+            </td>
         </tr>
         <tr>
             <th class="text-center col-md-2">등록일시</th>
-            <td class="col-md-10">${userVo.createdAt.substring(0, 16)}</td>
+            <td class="col-md-10">
+                <c:choose>
+                    <c:when test="${not empty user.createdAtAsDate}">
+                        <fmt:formatDate value="${user.createdAtAsDate}" pattern="yyyy-MM-dd HH:mm" />
+                    </c:when>
+                    <c:otherwise>-</c:otherwise>
+                </c:choose>
+            </td>
         </tr>
         <tr>
             <th class="text-center col-md-2">마지막 로그인</th>
-            <td class="col-md-10">${userVo.lastLoginAt.substring(0, 16)}</td>
+            <td class="col-md-10">
+                <c:choose>
+                    <c:when test="${not empty user.lastLoginAtAsDate}">
+                        <fmt:formatDate value="${user.lastLoginAtAsDate}" pattern="yyyy-MM-dd HH:mm" />
+                    </c:when>
+                    <c:otherwise>-</c:otherwise>
+                </c:choose>
+            </td>
         </tr>
     </table>
+
     <div>
         <a href="/user" class="btn btn-primary">사용자 목록</a>
         <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">사용자 삭제</button>
     </div>
-    <!--// 사용자 보기 -->
 </div>
 
 <!-- 삭제 모달 -->
@@ -53,7 +80,7 @@
                 <h5 class="modal-title" id="deleteModalLabel">사용자 삭제</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form action="/user/${usersVo.userId}/delete" method="POST">
+            <form action="/user/${user.userId}/delete" method="POST">
                 <div class="modal-body">
                     <div class="mb-3">
                         <label for="password" class="form-label">비밀번호</label>
@@ -73,8 +100,6 @@
 </div>
 <!--// 삭제 모달 -->
 
-<!-- 스크립트 -->
-<jsp:include page="../base/script.jsp" />
-<!--// 스크립트 -->
-
-<jsp:include page="../base/bottom.jsp" />
+<!-- ✅ 추가된 include 파일 -->
+<%@ include file="../base/script.jsp" %>
+<%@ include file="../base/bottom.jsp" %>

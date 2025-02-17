@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -135,7 +136,9 @@ public class PostsController {
 
     @GetMapping("/{id}")
     public ModelAndView readGet(@PathVariable("id") int id, HttpServletRequest request) {
-        String userId = (String) request.getSession().getAttribute("userId");
+        HttpSession session = request.getSession(false);
+        String userId = session != null ? (String) session.getAttribute("userId") : null;
+        String userRole = session != null ? (String) session.getAttribute("role") : null; // ✅ 역할 가져오기
     
         if (userId == null) {
             return new ModelAndView("redirect:/auth/login");
@@ -148,32 +151,49 @@ public class PostsController {
     
         ModelAndView mav = new ModelAndView("posts/read");
         mav.addObject("postsVo", postsVo);
-        mav.addObject("userId", userId); // 현재 로그인한 사용자 ID 추가
+        mav.addObject("userId", userId);
+        mav.addObject("userRole", userRole);  // ✅ 역할을 JSP로 전달
         return mav;
     }
     
+    
+    
+    
+    
 
-   // 게시글 삭제
-   @PostMapping("/{id}/delete")
-   public ModelAndView deletePost(@PathVariable("id") int id, HttpServletRequest request, RedirectAttributes redirectAttributes) {
-       String userId = (String) request.getSession().getAttribute("userId");
+// ✅ 게시글 삭제 (작성자 또는 관리자)
+@PostMapping("/{id}/delete")
+public ModelAndView deletePost(@PathVariable("id") int id, HttpServletRequest request, RedirectAttributes redirectAttributes) {
+    String userId = (String) request.getSession().getAttribute("userId");
+    String userRole = (String) request.getSession().getAttribute("role"); // ✅ 관리자 여부 확인
 
-       if (userId == null) {
-           redirectAttributes.addFlashAttribute("errorMessage", "로그인 후 삭제할 수 있습니다.");
-           return new ModelAndView("redirect:/auth/login");
-       }
+    if (userId == null) {
+        redirectAttributes.addFlashAttribute("errorMessage", "로그인 후 삭제할 수 있습니다.");
+        return new ModelAndView("redirect:/auth/login");
+    }
 
-       PostsVo postsVo = postsService.read(id);
-       if (postsVo == null || !userId.equals(postsVo.getCreatedBy())) {
-           redirectAttributes.addFlashAttribute("errorMessage", "본인이 작성한 게시글만 삭제할 수 있습니다.");
-           return new ModelAndView("redirect:/posts/" + id);
-       }
+    PostsVo postsVo = postsService.read(id);
+    if (postsVo == null) {
+        redirectAttributes.addFlashAttribute("errorMessage", "게시글을 찾을 수 없습니다.");
+        return new ModelAndView("redirect:/posts/");
+    }
 
-       boolean deleted = postsService.delete(id);
-       redirectAttributes.addFlashAttribute(deleted ? "successMessage" : "errorMessage",
-               deleted ? "게시글이 삭제되었습니다." : "게시글 삭제에 실패했습니다.");
-       return new ModelAndView("redirect:/posts/");
-   }
+    // ✅ 관리자는 모든 게시글 삭제 가능
+    if ("ROLE_ADMIN".equals(userRole) || userId.equals(postsVo.getCreatedBy())) {
+        boolean deleted = postsService.delete(id);
+        redirectAttributes.addFlashAttribute(deleted ? "successMessage" : "errorMessage",
+                deleted ? "게시글이 삭제되었습니다." : "게시글 삭제에 실패했습니다.");
+        return new ModelAndView("redirect:/posts/");
+    }
+
+    // ✅ 일반 사용자가 본인 게시글이 아닌 경우 삭제 차단
+    redirectAttributes.addFlashAttribute("errorMessage", "본인이 작성한 게시글만 삭제할 수 있습니다.");
+    return new ModelAndView("redirect:/posts/" + id);
+}
+
+
+
+
     // 게시글 수정
     @GetMapping("/{id}/update")
     public ModelAndView updateGet(@PathVariable("id") int id, HttpServletRequest request) {

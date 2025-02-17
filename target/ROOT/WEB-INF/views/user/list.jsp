@@ -2,7 +2,11 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %> <!-- ✅ 날짜 포맷용 태그 추가 -->
 
-<jsp:include page="../base/top.jsp" />
+<!-- ✅ 추가된 include 파일 -->
+<%@ include file="../base/top.jsp" %>
+<%@ include file="../base/navbar.jsp" %>
+<%@ include file="../base/title.jsp" %>
+<%@ include file="../base/message.jsp" %>
 
 <div class="container">
     <!-- 메시지 -->
@@ -108,8 +112,6 @@
 
 </div>
 
-<!-- 스크립트 -->
-<jsp:include page="../base/script.jsp" />
-<!--// 스크립트 -->
-
-<jsp:include page="../base/bottom.jsp" />
+<!-- ✅ 추가된 include 파일 -->
+<%@ include file="../base/script.jsp" %>
+<%@ include file="../base/bottom.jsp" %>

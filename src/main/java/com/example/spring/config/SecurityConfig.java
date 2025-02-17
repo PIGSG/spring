@@ -28,7 +28,7 @@ public class SecurityConfig {
         http
             .authorizeHttpRequests(auth -> auth
                 // 홈, auth 관련, 그리고 admin 로그인 페이지는 모두 접근 가능하도록 설정
-                .requestMatchers("/", "/auth/login", "/auth/logout").permitAll()
+                .requestMatchers("/", "/auth/login", "/auth/logout","/admin/login").permitAll()
                 // /user/** 는 ROLE_ADMIN 권한이 있어야 접근 가능
                 .requestMatchers("/user/**").hasAuthority("ROLE_ADMIN")
                 .anyRequest().authenticated()

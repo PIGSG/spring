@@ -1,5 +1,7 @@
 package com.example.spring.auth;
 
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -38,18 +40,28 @@ public class AuthService {
         return passwordEncoder.matches(rawPassword, storedUser.getPassword());
     }
 
-    // ✅ 비밀번호 초기화 (임시 비밀번호 발급)
+    // 비밀번호 초기화
     public String resetPassword(UsersVo usersVo) {
-        String temporaryPassword = generateRandomPassword();
-        String encodedPassword = passwordEncoder.encode(temporaryPassword);
-        usersVo.setPassword(encodedPassword);
+        // 랜덤 비밀번호 생성
+        String rndPassword = UUID.randomUUID().toString().substring(0, 8);
+        String encodedPassword = passwordEncoder.encode(rndPassword);
 
-        usersDao.update(usersVo);
-        return temporaryPassword;
-    }
 
-    // ✅ 임시 비밀번호 생성 (8자리 랜덤 문자열)
-    private String generateRandomPassword() {
-        return java.util.UUID.randomUUID().toString().substring(0, 8);
+            // 기존 유저 정보 가져오기 (userId 포함)
+        UsersVo existingUser = usersDao.read(usersVo);
+        if (existingUser == null) {
+            return null; // 존재하지 않는 사용자
+        }
+
+        // 비밀번호 업데이트
+        existingUser.setPassword(encodedPassword);
+        int updated = usersDao.update(existingUser);
+
+        if (updated > 0) {
+            return rndPassword;
+        } else {
+            return null;
+        }
+
     }
 }

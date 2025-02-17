@@ -65,6 +65,26 @@ public class PostsService {
     
     }
     
+// ✅ 게시글 삭제 (관리자 또는 작성자)
+public boolean deletePost(int postId, String userId, String userRole) {
+    PostsVo post = postsDao.read(postId);
+
+    if (post == null) {
+        return false;
+    }
+
+    // ✅ 관리자는 모든 게시글 삭제 가능
+    if ("ROLE_ADMIN".equals(userRole)) {
+        return postsDao.delete(postId) > 0;  // 🔹 `int` 값을 `boolean`으로 변환
+    }
+
+    // ✅ 일반 사용자는 본인 게시글만 삭제 가능
+    if (userId.equals(post.getCreatedBy())) {
+        return postsDao.delete(postId) > 0;  // 🔹 `int` 값을 `boolean`으로 변환
+    }
+
+    return false;
+}
 
 
     

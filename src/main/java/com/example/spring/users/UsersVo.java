@@ -28,7 +28,9 @@ public class UsersVo {
     public void setRole(String role) {
         this.role = role;
     }
+    
 
+    
 
 
     // ✅ 생성된 Getter/Setter는 Lombok이 자동으로 생성

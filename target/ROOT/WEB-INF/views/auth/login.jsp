@@ -30,7 +30,7 @@
             </div>
             <div class="mt-3">
                 <a href="/auth/register" class="btn btn-outline-secondary">회원가입</a>
-                <a href="/auth/find-user-id" class="btn btn-outline-secondary">아이디 찾기</a>
+                <a href="/auth/find-user-id" class="btn btn-outline-secondary">아이디 초기화</a>
                 <a href="/auth/reset-password" class="btn btn-outline-secondary">비밀번호 찾기</a>
             </div>
         </form>

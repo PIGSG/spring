@@ -76,12 +76,11 @@ public int updateLastLogin(String userId, LocalDateTime logoutTime) {
         return sqlSession.selectOne("userMapper.getTotalCount", params);
     }
 
-    // ✅ 중복된 delete() 메서드 제거 후 수정
+
+    // 사용자 삭제
     public int delete(String userId) {
-        return sqlSession.delete("userMapper.delete", userId); // 🔹 userMapper.delete 호출
+        return sqlSession.delete("userMapper.delete", userId);
     }
-
-
 
     
 }

@@ -10,26 +10,37 @@
         </button>
         <div class="navbar-collapse collapse" id="navbarCollapse">
             <ul class="navbar-nav me-auto mb-2 mb-md-0">
-                <li class="nav-item">
-                    <a class="nav-link" href="/posts">게시글</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/auth/profile">사용자</a>
-                </li>
+                <c:if test="${not empty sessionScope.user}">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/posts">게시글</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/auth/profile">프로필</a>
+                    </li>
+                    <c:if test="${sessionScope.user.role == 'ROLE_ADMIN'}">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/user">사용자</a> <!-- 관리자 전용 메뉴 -->
+                        </li>
+                    </c:if>
+                </c:if>
             </ul>
+
             <div class="d-flex">
                 <ul class="navbar-nav me-auto mb-2 mb-md-0">
                     <c:choose>
                         <c:when test="${not empty sessionScope.user}">
-                            <!-- 로그인 된 상태일 경우: 로그아웃 버튼 -->
                             <li class="nav-item">
-                                <a class="nav-link" href="/auth/logout">로그아웃</a>
+                                <a class="nav-link" href="/auth/logout">
+                                    <c:choose>
+                                        <c:when test="${sessionScope.user.role == 'ROLE_ADMIN'}">관리자 로그아웃</c:when>
+                                        <c:otherwise>로그아웃</c:otherwise>
+                                    </c:choose>
+                                </a>
                             </li>
                         </c:when>
                         <c:otherwise>
-                            <!-- 로그인 안 된 상태일 경우: 로그인 버튼 -->
                             <li class="nav-item">
-                                <a class="nav-link" href="/auth/login">로그인</a>
+                                <a class="nav-link" href="/auth/login">일반 로그인</a>
                             </li>
                         </c:otherwise>
                     </c:choose>

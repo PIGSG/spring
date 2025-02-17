@@ -17,11 +17,19 @@
                 <div class="card-body">                
                     <div class="mb-3">
                         <label for="userId" class="form-label">아이디</label>
-                        <input type="text" class="form-control" id="userId" name="userId" placeholder="아이디" required>
-                    </div>    
+                        <input type="text" class="form-control" id="userId" name="userId" value="${user.userId}" required readonly>
+                    </div>     
                     <div class="mb-3">
-                        <label for="password" class="form-label">비밀번호</label>
-                        <input type="password" class="form-control" id="password" name="password" placeholder="비밀번호" required>
+                        <label for="username" class="form-label">이름</label>
+                        <input type="text" class="form-control" id="username" name="username" placeholder="이름" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="tel" class="form-label">전화번호</label>
+                        <input type="text" class="form-control" id="tel" name="tel" placeholder="전화번호" required>
+                    </div>                
+                    <div class="mb-3">
+                        <label for="email" class="form-label">이메일</label>
+                        <input type="email" class="form-control" id="email" name="email" placeholder="이메일" required>
                     </div>
                 </div>
             </div>
@@ -41,20 +49,20 @@
 <script>
     $(document).ready(function() {        
         // 프로필 수정 폼 검증
-        $('#updateForm').validate({
+        $('#updateProfileForm').validate({
             rules: {
                 username: {
                     required: true,
                     maxlength: 50
                 },
+                tel: {
+                    required: true,
+                    maxlength: 20
+                },
                 email: {
                     required: true,
                     email: true,
                     maxlength: 50
-                },
-                tel: {
-                    required: true,
-                    maxlength: 20
                 }
             },
             messages: {
@@ -62,14 +70,14 @@
                     required: '이름을 입력하세요.',
                     maxlength: '이름은 최대 50자까지 가능합니다.'
                 },
+                tel: {
+                    required: '전화번호를 입력하세요.',
+                    maxlength: '전화번호는 최대 20자까지 가능합니다.'
+                },
                 email: {
                     required: '이메일을 입력하세요.',
                     email: '올바른 이메일 형식이 아닙니다.',
                     maxlength: '이메일은 최대 50자까지 가능합니다.'
-                },
-                tel: {
-                    required: '연락처를 입력하세요.',
-                    maxlength: '연락처는 최대 20자까지 가능합니다.'
                 }
             },
             errorClass: 'is-invalid',
